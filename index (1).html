@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Target200 — daily study tracker for Class 12 students aiming for 199/200.">
+<title>Target200 — Study Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232B44D9'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='700' text-anchor='middle' fill='white' font-family='sans-serif'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EFF2F8;--card:#fff;--line:#DCE2EE;--ink:#101936;--mute:#5F6B88;--acc:#2B44D9;--acc2:#E8ECFD;--pen:#E5484D;
+--maths:#2F6BFF;--physics:#E8920C;--chem:#D6336C;--ok:#1F9D6B;--r:16px;
+--h:'Bricolage Grotesque',system-ui,sans-serif;--b:'Figtree',system-ui,-apple-system,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0C1122;--card:#151C33;--line:#262F4D;--ink:#EAEEFB;--mute:#93A0C4;--acc:#7F93FF;--acc2:#1E2850;--pen:#FF6B70;--maths:#6D97FF;--physics:#F5B040;--chem:#F0709C}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:16px/1.5 var(--b);color:var(--ink);background:var(--bg);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;background-attachment:fixed;min-height:100dvh}
+body:before{content:"";position:fixed;inset:0;background:var(--bg);opacity:.82;z-index:-1}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.hidden{display:none!important}
+h1,h2,.num{font-family:var(--h);letter-spacing:-.02em}
+#app{display:flex;min-height:100dvh}
+.side{width:230px;padding:24px 16px;border-right:1px solid var(--line);background:var(--card);position:sticky;top:0;height:100dvh;display:flex;flex-direction:column;gap:6px}
+.logo{font:800 22px var(--h);padding:0 10px 18px}.logo b{color:var(--pen)}
+.nav{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--mute);font-weight:500;text-align:left;width:100%}
+.nav.on{background:var(--acc2);color:var(--acc);font-weight:600}
+.nav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sfoot{margin-top:auto;display:grid;gap:8px}
+main{flex:1;min-width:0;padding:28px 24px 40px;max-width:880px;margin:0 auto;width:100%}
+.title{font-size:30px;font-weight:800;margin-bottom:4px}.sub{color:var(--mute);margin-bottom:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.lbl{font-weight:600;color:var(--mute);font-size:14px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid .card{margin:0}
+.chip{display:inline-block;padding:5px 12px;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:600;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:12px;font-weight:600;background:var(--acc);color:#fff;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn.o{background:transparent;color:var(--ink);border:1.5px solid var(--line)}.btn.d{background:transparent;color:var(--pen);border:1.5px solid var(--pen)}
+.btn.s{padding:7px 14px;font-size:14px}.btn.f{width:100%}
+input,select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink);font:inherit;margin-bottom:12px}
+label{display:block;font-size:14px;font-weight:600;color:var(--mute);margin-bottom:5px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.c-Maths{--c:var(--maths)}.c-Physics{--c:var(--physics)}.c-Chemistry{--c:var(--chem)}.dot,.fill{background:var(--c)}
+.ring{position:relative;width:170px;height:170px;margin:0 auto}.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:11}.ring .bg{stroke:var(--line)}.ring .fg{stroke:var(--acc);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.ring div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.big{font:800 34px var(--h)}.small{font-size:13px;color:var(--mute)}
+.row{display:flex;align-items:center;gap:10px;margin:10px 0}.row .nm{width:92px;font-weight:500;display:flex;align-items:center}
+.track{flex:1;height:9px;background:var(--bg);border-radius:9px;overflow:hidden}.fill{height:100%;border-radius:9px;transition:width .5s;background:var(--c,var(--acc))}
+.tm{width:60px;text-align:right;font-weight:600;font-size:14px}
+.item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}
+.item input{width:20px;height:20px;margin:0;accent-color:var(--acc);flex:none}.item.done .t{text-decoration:line-through;opacity:.5}
+.t{flex:1;min-width:0}.t small{display:block;color:var(--mute);font-size:13px}
+.tag{font-size:12px;font-weight:600;color:var(--physics);background:color-mix(in srgb,var(--physics) 15%,transparent);padding:3px 9px;border-radius:99px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}.sb{padding:12px 20px;border-radius:12px;border:1.5px solid var(--line);font-weight:600}
+.sb.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.timer{font:800 64px var(--h);text-align:center;font-variant-numeric:tabular-nums;margin:8px 0}
+.banner{background:color-mix(in srgb,var(--pen) 14%,transparent);color:var(--pen);padding:11px 14px;border-radius:12px;font-weight:600;margin-top:14px;text-align:center}
+.warn{background:color-mix(in srgb,var(--physics) 16%,transparent);padding:11px 14px;border-radius:12px;margin-top:14px;font-size:14px}
+#cam{position:fixed;right:16px;bottom:16px;width:150px;border-radius:14px;border:3px solid var(--line);z-index:5;transform:scaleX(-1);background:#000}
+#cam.has{border-color:var(--ok)}#cam.no{border-color:var(--pen)}
+.tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;width:fit-content;max-width:100%;overflow:auto}
+.tab{padding:8px 16px;border-radius:10px;font-weight:600;color:var(--mute);white-space:nowrap}.tab.on{background:var(--acc);color:#fff}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--card)}
+summary{padding:14px 16px;cursor:pointer;font-weight:600;display:flex;gap:12px;align-items:center;list-style:none}summary::-webkit-details-marker{display:none}
+summary .track{max-width:80px;flex:none}.topics{padding:0 16px 8px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:170px;position:relative;border-bottom:1px solid var(--line)}
+.bar{flex:1;display:flex;flex-direction:column-reverse;border-radius:5px 5px 0 0;overflow:hidden;min-width:0}.bar i{display:block;background:var(--c)}
+.goal{position:absolute;left:0;right:0;border-top:2px dashed var(--pen);opacity:.7}
+.xl{display:flex;gap:3px;margin-top:6px}.xl span{flex:1;text-align:center;font-size:11px;color:var(--mute);min-width:0}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px;overflow-x:auto;padding-bottom:4px}
+.heat i{width:16px;height:16px;border-radius:4px;background:var(--line)}
+.heat .l1{background:color-mix(in srgb,var(--acc) 28%,var(--line))}.heat .l2{background:color-mix(in srgb,var(--acc) 55%,var(--line))}.heat .l3{background:color-mix(in srgb,var(--acc) 80%,var(--line))}.heat .l4{background:var(--acc)}.heat .fut{background:transparent}
+.modal{position:fixed;inset:0;background:rgba(10,15,35,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.mc{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:420px;max-height:90dvh;overflow:auto}.mc h2{margin-bottom:14px}
+.empty{color:var(--mute);padding:8px 0}
+.bn{display:none}
+@media(max-width:760px){.side{display:none}main{padding:18px 16px 96px}.grid{grid-template-columns:1fr}.timer{font-size:52px}
+.bn{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:10}
+.bn .nav{flex-direction:column;gap:2px;font-size:12px;justify-content:center;align-items:center;padding:6px 2px}#cam{bottom:84px;width:110px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app" class="hidden">
+  <aside class="side" id="side"></aside>
+  <main id="main"></main>
+</div>
+<nav class="bn hidden" id="bn"></nav>
+<video id="cam" class="hidden" autoplay muted playsinline></video>
+<div id="mroot"></div>
+
+<script>
+/* ===== Config & syllabus (chapter: topics separated by commas) ===== */
+const MODEL='https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
+const MP='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+const BLOCK=90*60,BREAK=30*60,GRACE=5,POLL=500;
+const SUBS=['Maths','Physics','Chemistry'];
+const RAW={
+Maths:{"Applications of Matrices and Determinants":"Rank of a matrix,Consistency of equations,Cramer's rule,Gaussian elimination","Complex Numbers":"Rectangular form,Polar form,De Moivre's theorem,Roots of complex numbers","Theory of Equations":"Polynomial roots,Roots and coefficients,Descartes' rule of signs","Inverse Trigonometric Functions":"Domain and range,Principal values,Graphs,Basic properties","Two Dimensional Analytical Geometry-II":"Conics,Parabola,Ellipse,Hyperbola,Tangents,Normals","Applications of Vector Algebra":"Scalar triple product,Vector triple product,Equations of lines,Equations of planes","Applications of Differential Calculus":"Rates of change,Rolle's theorem,Mean value theorem,L'Hopital's rule,Curve sketching","Differentials and Partial Derivatives":"Linear approximation,Total differentials,Partial derivatives,Euler's theorem","Applications of Integration":"Definite integrals,Reduction formulas,Area under curves,Volumes of revolution","Ordinary Differential Equations":"Order and degree,Variable separable,First-order linear equations","Probability Distributions":"Random variables,Density functions,Expectation,Mean and variance","Discrete Mathematics":"Binary operations,Mathematical logic,Truth tables,Tautologies"},
+Physics:{"Electrostatics":"Electric charges,Coulomb's law,Electric field,Electric potential,Gauss's law,Capacitors","Current Electricity":"Ohm's law,Drift velocity,Kirchhoff's rules,Wheatstone bridge,Potentiometer","Magnetism and Magnetic Effects":"Lorentz force,Ampere's law,Cyclotron,Circular current loop,Earth's magnetism","EMI and Alternating Current":"Faraday's laws,Lenz's law,Self and mutual induction,AC generators,Transformers,LCR circuits","Electromagnetic Waves":"Displacement current,Maxwell's equations,EM spectrum","Ray Optics":"Spherical surfaces,Total internal reflection,Thin lenses,Prism,Optical instruments","Wave Optics":"Wavefronts,Huygens's principle,Young's double slit,Diffraction","Dual Nature of Radiation and Matter":"Electron emission,Photoelectric effect,Einstein's equation,de Broglie wavelength","Atomic and Nuclear Physics":"Atomic spectra,Bohr model,Radioactivity,Binding energy,Fission,Fusion","Electronics and Communication":"Semiconductor diodes,Transistors,Logic gates,Communication principles,Modulation","Recent Developments in Physics":"Nanoscience,Nanotechnology,Robotics"},
+Chemistry:{"Metallurgy":"Metal extraction,Concentration of ores,Refining,Ellingham diagram,Hall-Heroult process","p-Block Elements I":"Group 13 trends,Group 14 trends,Compounds of boron,Compounds of carbon","p-Block Elements II":"Group 15,Group 16,Group 17,Group 18,Oxoacids and halides","Transition and Inner Transition Elements":"d-block elements,f-block elements,KMnO4,K2Cr2O7","Coordination Chemistry":"Werner's theory,IUPAC nomenclature,Valence Bond Theory,Crystal Field Theory","Solid State":"Crystal lattices,Unit cells,Close packing,Packing efficiency,Defects","Chemical Kinetics":"Rate of reaction,Integrated rate equations,Half-life,Collision theory,Arrhenius equation","Ionic Equilibrium":"Acids and bases,pH scale,Buffer solutions,Solubility product,Common ion effect","Electrochemistry":"Conductance,Kohlrausch's law,Nernst equation,Electrochemical cells,Batteries,Corrosion","Surface Chemistry":"Adsorption,Catalysis,Colloids,Emulsions","Hydroxy Compounds and Ethers":"Classification,Alcohols,Phenols,Ethers","Carbonyl Compounds and Carboxylic Acids":"Aldehydes and ketones,Carboxylic acids,Nucleophilic addition,Cannizzaro reaction,Aldol condensation","Organic Nitrogen Compounds":"Nitro compounds,Amines,Diazonium salts,Cyanides and isocyanides","Biomolecules":"Carbohydrates,Proteins,Nucleic acids,Vitamins","Chemistry in Everyday Life":"Medicines,Food additives,Cleansing agents"}};
+const SYL={};for(const s in RAW){SYL[s]={};let i=1;for(const c in RAW[s])SYL[s][i++ +'. '+c]=RAW[s][c].split(',')}
+
+/* ===== Storage ===== */
+const KEY='target200_v2';
+const def={name:'',goal:3,exam:'2027-03-01',time:{},tt:{},done:{},tl:{},td:{},tests:[]};
+let D;try{D={...def,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){D={...def}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+const pad=n=>String(n).padStart(2,'0');
+const ds=d=>{d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return ds(d)};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const dur=s=>{s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'h '+m+'m':m?m+'m':s+'s'};
+const hms=s=>{s=Math.floor(s);return Math.floor(s/3600)+':'+pad(Math.floor(s%3600/60))+':'+pad(s%60)};
+const goalS=()=>D.goal*3600;
+const dayT=d=>{const t=D.time[d]||{};return SUBS.reduce((a,s)=>a+(t[s]||0),0)};
+const daysLeft=()=>Math.max(0,Math.ceil((new Date(D.exam+'T00:00:00')-new Date())/864e5));
+const streak=()=>{let n=0;for(let i=0;i<400;i++){if(dayT(ago(i))>=goalS())n++;else if(i>0)break;else continue}return n};
+const compl=()=>{let d=0,t=0;for(const s in SYL)for(const c in SYL[s])for(const p of SYL[s][c]){t++;if(D.done[s+'|'+c+'|'+p])d++}return{d,t,p:t?Math.round(d/t*100):0}};
+
+/* ===== Shell ===== */
+const ICON={today:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',study:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',syllabus:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',progress:'<path d="M18 20V10M12 20V4M6 20v-6"/>',tests:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'};
+const PAGES=['today','study','syllabus','progress','tests'];
+const NAME={today:'Today',study:'Study',syllabus:'Syllabus',progress:'Progress',tests:'Mock tests'};
+let cur='today';
+function shell(){
+  const nav=PAGES.map(p=>`<button class="nav" data-p="${p}"><svg viewBox="0 0 24 24">${ICON[p]}</svg><span>${NAME[p]}</span></button>`).join('');
+  $('side').innerHTML=`<div class="logo">Target<b>200</b></div>${nav}<div class="sfoot"><span class="chip" id="dl"></span><button class="btn o s" data-a="settings">Settings</button></div>`;
+  $('bn').innerHTML=nav.replace(/Mock tests/,'Tests');
+  $('bn').classList.remove('hidden');$('app').classList.remove('hidden');
+}
+function nav(p){
+  cur=p;document.querySelectorAll('[data-p]').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  $('dl')&&($('dl').textContent=daysLeft()+' days left');
+  $('main').innerHTML=R[p]();$('main').scrollTop=0;window.scrollTo(0,0);
+  $('cam').classList.toggle('hidden',!(ses&&p==='study'&&!ses.brk&&ses.cam));
+  if(p==='study'&&ses)uiTimer();
+}
+function modal(html){$('mroot').innerHTML=`<div class="modal" data-a="mclose"><div class="mc">${html}</div></div>`}
+const closeModal=()=>$('mroot').innerHTML='';
+
+/* ===== Pages ===== */
+const subBar=(s,v,max)=>`<div class="row c-${s}"><span class="nm"><span class="dot"></span>${s}</span><div class="track"><div class="fill" style="width:${v/Math.max(max,1)*100}%"></div></div><span class="tm">${dur(v)}</span></div>`;
+function carry(){const out=[],seen=new Set(D.tl[ds()]||[]);for(let i=1;i<=30;i++){const d=ago(i);for(const k of D.tl[d]||[])if(!seen.has(k)&&!(D.td[d]||{})[k]&&!D.done[k]){seen.add(k);out.push({k,days:i})}}return out}
+const R={
+today(){
+  const h=new Date().getHours(),t=D.time[ds()]||{},tot=dayT(ds()),mx=Math.max(...SUBS.map(s=>t[s]||0));
+  const C=2*Math.PI*54,off=C*(1-Math.min(tot/goalS(),1)),cp=compl();
+  const keys=[...carry().map(c=>c.k),...(D.tl[ds()]||[])],co=Object.fromEntries(carry().map(c=>[c.k,c.days]));
+  const dn=D.td[ds()]||{};
+  const items=keys.length?keys.map(k=>{const[s,c,p]=k.split('|');return`<div class="item ${dn[k]?'done':''}"><input type="checkbox" data-a="td" data-k="${esc(k)}" ${dn[k]?'checked':''} aria-label="${esc(p)}"><div class="t">${esc(p)}<small>${s} · ${esc(c)}</small></div>${co[k]?`<span class="tag">Carried over ${co[k]}d</span>`:''}</div>`}).join(''):'<p class="empty">Nothing planned yet. Add the topics you want to finish today.</p>';
+  return`<h1 class="title">${h<12?'Good morning':h<17?'Good afternoon':'Good evening'}, ${esc(D.name.split(' ')[0])}</h1>
+  <p class="sub">${daysLeft()} days to the exam. ${tot>=goalS()?'Goal reached. Anything more is a bonus.':'Study '+dur(Math.max(goalS()-tot,0))+' more to hit today\'s goal.'}</p>
+  <div class="grid"><div class="card"><p class="lbl">Today's study time</p><div class="ring"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fg" cx="60" cy="60" r="54" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><div><span class="big">${dur(tot)}</span><span class="small">of ${D.goal}h goal</span></div></div></div>
+  <div style="display:grid;gap:16px"><div class="card"><p class="lbl">Goal streak</p><span class="big">${streak()}</span> <span class="small">days in a row</span></div>
+  <div class="card"><p class="lbl">Syllabus done</p><span class="big">${cp.p}%</span> <span class="small">${cp.d} of ${cp.t} topics</span><div class="track" style="margin-top:10px"><div class="fill" style="width:${cp.p}%;--c:var(--ok)"></div></div></div></div></div>
+  <div class="card" style="margin-top:16px"><p class="lbl">Time per subject today</p>${SUBS.map(s=>subBar(s,t[s]||0,mx)).join('')}</div>
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><p class="lbl" style="margin:0">Today's topics</p><button class="btn o s" data-a="addtopic">Add topic</button></div>${items}</div>`},
+study(){
+  if(ses)return`<h1 class="title">${ses.s}</h1><p class="sub">${esc(ses.p)}</p>
+  <div class="card"><div class="timer" id="tmr">0:00:00</div><p class="sub" style="text-align:center;margin:0" id="tst"></p><div class="banner hidden" id="bnr"></div><div class="warn hidden" id="wrn"></div>
+  <div class="chips" style="justify-content:center;margin-top:18px"><button class="btn o" data-a="pause" id="pb">Pause</button><button class="btn o" data-a="brk">Take a break</button><button class="btn d" data-a="stop">Finish session</button></div></div>
+  ${ses.brk?`<div class="card" style="text-align:center"><h2>Break time</h2><p class="sub">Stretch, drink water, rest your eyes.</p><div class="timer" id="brt">${mmss(ses.br)}</div><button class="btn" data-a="endbrk">End break</button></div>`:''}`;
+  return`<h1 class="title">Start a study session</h1><p class="sub">The timer runs only while the camera sees you at your desk.</p>
+  <div class="card"><p class="lbl">1. Subject</p><div class="chips">${SUBS.map(s=>`<button class="sb c-${s} ${pick.s===s?'on':''}" data-a="subj" data-k="${s}"><span class="dot"></span>${s}</button>`).join('')}</div></div>
+  ${pick.s?`<div class="card"><p class="lbl">2. Chapter and topic</p><select id="sc"><option value="">Choose a chapter</option>${Object.keys(SYL[pick.s]).map(c=>`<option ${c===pick.c?'selected':''}>${esc(c)}</option>`).join('')}</select>${pick.c?`<select id="sp"><option value="">Choose a topic</option>${SYL[pick.s][pick.c].map(p=>`<option ${p===pick.p?'selected':''}>${esc(p)}</option>`).join('')}</select>`:''}</div>`:''}
+  ${pick.p?'<button class="btn" data-a="start">Start session</button>':''}`},
+syllabus(){
+  const cp=compl(),ch=SYL[sylS];let sd=0,st=0;
+  for(const c in ch)for(const p of ch[c]){st++;if(D.done[sylS+'|'+c+'|'+p])sd++}
+  const sp=st?Math.round(sd/st*100):0;
+  const list=Object.entries(ch).map(([c,ps])=>{const n=ps.filter(p=>D.done[sylS+'|'+c+'|'+p]).length;
+    return`<details ${open.has(c)?'open':''} data-c="${esc(c)}"><summary><span style="flex:1">${esc(c)}</span><span class="small">${n}/${ps.length}</span><span class="track c-${sylS}"><span class="fill" style="width:${n/ps.length*100}%;display:block"></span></span></summary><div class="topics">${ps.map(p=>{const k=sylS+'|'+c+'|'+p;let s=0;for(const x in D.tt)if(x.slice(11)===k)s+=D.tt[x];return`<div class="item"><input type="checkbox" data-a="syl" data-k="${esc(k)}" ${D.done[k]?'checked':''} aria-label="${esc(p)}"><div class="t">${esc(p)}</div><span class="small">${s>=60?dur(s):''}</span></div>`}).join('')}</div></details>`}).join('');
+  return`<h1 class="title">Syllabus</h1><p class="sub">Topics are ticked automatically after 5 minutes of study. You can also tick them yourself.</p>
+  <div class="card"><div style="display:flex;justify-content:space-between"><p class="lbl">Overall completion</p><b>${cp.p}%</b></div><div class="track"><div class="fill" style="width:${cp.p}%;--c:var(--ok)"></div></div></div>
+  <div class="tabs">${SUBS.map(s=>`<button class="tab ${s===sylS?'on':''}" data-a="stab" data-k="${s}">${s}</button>`).join('')}</div>
+  <p class="lbl">${sylS}: ${sp}% done</p>${list}`},
+progress(){
+  const n=prog==='week'?7:prog==='month'?30:1,tot={Maths:0,Physics:0,Chemistry:0};
+  for(let i=0;i<n;i++){const t=D.time[ago(i)]||{};SUBS.forEach(s=>tot[s]+=t[s]||0)}
+  const sum=SUBS.reduce((a,s)=>a+tot[s],0),mx=Math.max(...SUBS.map(s=>tot[s]));
+  const by={};for(const k in D.tt){const d=k.slice(0,10);if(d>=ago(n-1)){const tk=k.slice(11);by[tk]=(by[tk]||0)+D.tt[k]}}
+  const top=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  // bar chart: last 14 or 30 days
+  const N=prog==='month'?30:14,days=[...Array(N)].map((_,i)=>ago(N-1-i));
+  const top2=Math.max(goalS(),...days.map(dayT));
+  const bars=days.map(d=>{const t=D.time[d]||{};return`<div class="bar" title="${d}: ${dur(dayT(d))}" style="height:${dayT(d)/top2*100}%">${SUBS.map(s=>`<i class="c-${s}" style="height:${(t[s]||0)/Math.max(dayT(d),1)*100}%"></i>`).join('')}</div>`}).join('');
+  const lab=days.map((d,i)=>`<span>${N<=14?['S','M','T','W','T','F','S'][new Date(d+'T00:00').getDay()]:(i%5===0?+d.slice(8):'')}</span>`).join('');
+  // heatmap: 17 weeks
+  const today=new Date(),dow=(today.getDay()+6)%7,start=new Date(today);start.setDate(start.getDate()-(16*7+dow));
+  let cells='';for(let i=0;i<17*7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const s=ds(d);
+    if(d>today){cells+='<i class="fut"></i>';continue}const r=dayT(s)/goalS();
+    cells+=`<i class="${r>=1?'l4':r>=.66?'l3':r>=.33?'l2':r>0?'l1':''}" title="${s}: ${dur(dayT(s))}"></i>`}
+  return`<h1 class="title">Progress</h1><p class="sub">See where your hours are going.</p>
+  <div class="tabs">${[['today','Today'],['week','This week'],['month','This month']].map(([k,l])=>`<button class="tab ${k===prog?'on':''}" data-a="per" data-k="${k}">${l}</button>`).join('')}</div>
+  <div class="grid"><div class="card"><p class="lbl">Total study time</p><span class="big">${dur(sum)}</span></div><div class="card"><p class="lbl">Daily average</p><span class="big">${dur(sum/n)}</span></div></div>
+  <div class="card" style="margin-top:16px"><p class="lbl">By subject</p>${SUBS.map(s=>subBar(s,tot[s],mx)).join('')}</div>
+  <div class="card"><p class="lbl">Daily hours, last ${N} days <span class="small">(dashed line = goal)</span></p><div class="bars"><div class="goal" style="bottom:${goalS()/top2*100}%"></div>${bars}</div><div class="xl">${lab}</div></div>
+  <div class="card"><p class="lbl">Study heatmap, last 17 weeks</p><div class="heat">${cells}</div><p class="small" style="margin-top:8px">Darker means closer to or above your ${D.goal}h goal.</p></div>
+  <div class="card"><p class="lbl">Top topics by time</p>${top.length?top.map(([k,s],i)=>{const p=k.split('|');return`<div class="item c-${p[0]}"><b>#${i+1}</b><div class="t">${esc(p[2])}<small><span class="dot"></span>${p[0]}</small></div><b>${dur(s)}</b></div>`}).join(''):'<p class="empty">No study time recorded in this period.</p>'}</div>`},
+tests(){
+  const T=[...D.tests].sort((a,b)=>b.date.localeCompare(a.date)),pc=t=>t.sc/t.max*100;
+  const avg=s=>{const x=D.tests.filter(t=>t.s===s);return x.length?Math.round(x.reduce((a,t)=>a+pc(t),0)/x.length):null};
+  const asc=[...D.tests].sort((a,b)=>a.date.localeCompare(b.date)),W=600,H=160;
+  const pts=asc.map((t,i)=>[asc.length>1?20+i/(asc.length-1)*(W-40):W/2,H-12-pc(t)/100*(H-30),t]);
+  const svg=asc.length?`<svg viewBox="0 0 ${W} ${H}" style="width:100%"><g stroke="var(--line)">${[0,50,100].map(v=>`<line x1="0" x2="${W}" y1="${H-12-v/100*(H-30)}" y2="${H-12-v/100*(H-30)}"/>`).join('')}</g>${pts.length>1?`<polyline fill="none" stroke="var(--mute)" stroke-width="1.5" points="${pts.map(p=>p[0]+','+p[1]).join(' ')}"/>`:''}${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" class="c-${p[2].s}" fill="var(--c)"><title>${esc(p[2].n)}: ${p[2].sc}/${p[2].max}</title></circle>`).join('')}</svg>`:'';
+  return`<h1 class="title">Mock tests</h1><p class="sub">Log every test and watch your scores climb toward 199.</p>
+  <div class="grid">${SUBS.map(s=>`<div class="card c-${s}"><p class="lbl"><span class="dot"></span>${s} average</p><span class="big">${avg(s)==null?'—':avg(s)+'%'}</span></div>`).join('')}</div>
+  <div class="card" style="margin-top:16px"><div style="display:flex;justify-content:space-between;align-items:center"><p class="lbl" style="margin:0">Score trend (%)</p><button class="btn s" data-a="addtest">Add test</button></div>${svg||'<p class="empty">Add your first mock test to see the trend.</p>'}</div>
+  <div class="card"><p class="lbl">All tests</p>${T.length?T.map(t=>`<div class="item c-${t.s}"><span class="dot"></span><div class="t">${esc(t.n)}<small>${t.s} · ${t.date}</small></div><b>${t.sc}/${t.max} <span class="small">${Math.round(pc(t))}%</span></b><button class="btn o s" data-a="deltest" data-k="${t.id}" aria-label="Delete test">✕</button></div>`).join(''):'<p class="empty">No tests logged yet.</p>'}</div>`}
+};
+let pick={},sylS='Maths',prog='week';const open=new Set();
+const mmss=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+
+/* ===== Study session + face detection ===== */
+let ses=null,det=null,stream=null,faceId=null,tickId=null,saveId=null,brkId=null;
+const paused=()=>!ses||ses.pr.face||ses.pr.tab||ses.pr.man||ses.pr.wait;
+function uiTimer(){
+  if(!ses||cur!=='study')return;
+  const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};
+  set('tmr',hms(ses.tot));set('pb',ses.pr.man?'Resume':'Pause');
+  const why=ses.pr.wait?(ses.manual?'':'Waiting for your face…'):ses.pr.face?'Paused: you left your desk':ses.pr.tab?'Paused: tab is hidden':ses.pr.man?'Paused':'Timer running';
+  set('tst',ses.status||why);
+  const b=$('bnr');if(b){b.classList.toggle('hidden',!ses.pr.face);b.textContent='Come back to your desk. The timer is paused.'}
+  const w=$('wrn');if(w){w.classList.toggle('hidden',!ses.warn);w.textContent=ses.warn||''}
+}
+async function startSession(){
+  ses={s:pick.s,c:pick.c,p:pick.p,tot:0,pend:0,blk:0,last:Date.now(),brk:false,br:BREAK,cam:false,manual:false,absent:null,status:'Starting camera…',warn:'',pr:{face:false,tab:document.hidden,man:false,wait:true}};
+  nav('study');
+  tickId=setInterval(tick,1000);saveId=setInterval(flush,30000);
+  await startCam();
+}
+async function startCam(){
+  if(!ses)return;
+  ses.status='Starting camera…';uiTimer();
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:320},height:{ideal:240}},audio:false});
+    const v=$('cam');v.srcObject=stream;await v.play();ses.cam=true;v.classList.toggle('hidden',cur!=='study');
+    ses.status='Loading face detector…';uiTimer();
+    if(!det)det=await loadDet();
+    ses.status='';ses.manual=false;ses.warn='';uiTimer();
+    clearInterval(faceId);faceId=setInterval(detect,POLL);
+  }catch(e){
+    console.warn(e);ses.cam=false;$('cam').classList.add('hidden');
+    ses.manual=true;ses.pr.wait=false;ses.status='';
+    ses.warn=(e&&e.name==='NotAllowedError'||e&&e.name==='NotFoundError')?'Camera is blocked or missing, so face detection is off. The timer runs normally. Allow camera access and press Finish, then start again to use it.':'Face detector could not load (check your internet). The timer runs normally without it.';
+    uiTimer();
+  }
+}
+async function loadDet(){
+  const m=await import(MP+'/+esm');
+  const v=await m.FilesetResolver.forVisionTasks(MP+'/wasm');
+  const mk=d=>m.FaceDetector.createFromOptions(v,{baseOptions:{modelAssetPath:MODEL,delegate:d},runningMode:'VIDEO',minDetectionConfidence:.5});
+  try{return await mk('GPU')}catch(e){return await mk('CPU')}
+}
+function detect(){
+  const v=$('cam');if(!ses||ses.brk||!det||v.readyState<2||document.hidden)return;
+  let ok;try{ok=det.detectForVideo(v,performance.now()).detections.length>0}catch(e){return}
+  v.className=ok?'has':'no';
+  if(ok){ses.absent=null;ses.pr.face=false;ses.pr.wait=false}
+  else{ses.absent=ses.absent||Date.now();if((Date.now()-ses.absent)/1000>=GRACE&&!ses.pr.wait){ses.pr.face=true;flush()}}
+  uiTimer();
+}
+function tick(){
+  if(!ses)return;const n=Date.now(),dt=Math.min((n-ses.last)/1000,2);ses.last=n;
+  if(ses.brk||paused())return uiTimer();
+  ses.tot+=dt;ses.pend+=dt;ses.blk+=dt;uiTimer();
+  if(ses.blk>=BLOCK)startBreak();
+}
+function flush(){
+  if(!ses||ses.pend<1)return;const s=Math.floor(ses.pend);ses.pend-=s;
+  const d=ds();D.time[d]=D.time[d]||{Maths:0,Physics:0,Chemistry:0};D.time[d][ses.s]=(D.time[d][ses.s]||0)+s;
+  const k=d+'|'+ses.s+'|'+ses.c+'|'+ses.p;D.tt[k]=(D.tt[k]||0)+s;
+  if(ses.tot>=300)D.done[ses.s+'|'+ses.c+'|'+ses.p]=1;save();
+}
+function stopCam(){clearInterval(faceId);if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;$('cam').srcObject=null;$('cam').classList.add('hidden');if(ses)ses.cam=false}
+function endSession(){flush();clearInterval(tickId);clearInterval(saveId);clearInterval(brkId);stopCam();ses=null;pick={};nav('today')}
+function startBreak(){
+  if(!ses||ses.brk)return;flush();ses.brk=true;ses.br=BREAK;ses.blk=0;stopCam();if(cur==='study')nav('study');
+  brkId=setInterval(()=>{ses.br--;const e=$('brt');if(e)e.textContent=mmss(ses.br);if(ses.br<=0){endBreak();chime()}},1000);
+}
+function endBreak(){clearInterval(brkId);if(!ses)return;ses.brk=false;ses.pr.wait=true;ses.last=Date.now();if(cur==='study')nav('study');startCam()}
+function chime(){try{const c=new(window.AudioContext||window.webkitAudioContext)();[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+i*.28;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.15,t+.05);g.gain.linearRampToValueAtTime(0,t+.65);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.7)})}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(ses){ses.pr.tab=document.hidden;ses.last=Date.now();if(document.hidden)flush();uiTimer()}});
+addEventListener('pagehide',flush);addEventListener('beforeunload',e=>{flush();if(ses){e.preventDefault();e.returnValue=''}});
+
+/* ===== Modals ===== */
+const opts=(a,ph)=>`<option value="">${ph}</option>`+a.map(x=>`<option>${esc(x)}</option>`).join('');
+function addTopicModal(){modal(`<h2>Add a topic to today</h2><label>Subject</label><select id="ms">${opts(SUBS,'Choose a subject')}</select><label>Chapter</label><select id="mc2"><option value="">Choose a chapter</option></select><label>Topic</label><select id="mp"><option value="">Choose a topic</option></select><button class="btn f" data-a="addtopicok">Add to today</button>`)}
+function addTestModal(){modal(`<h2>Add a mock test</h2><label>Test name</label><input id="tn" placeholder="e.g. Unit test 2"><label>Subject</label><select id="ts">${opts(SUBS,'Choose a subject')}</select><div class="grid" style="gap:12px"><div><label>Marks scored</label><input id="tsc" type="number" min="0" step="0.5"></div><div><label>Out of</label><input id="tmx" type="number" min="1" value="100"></div></div><label>Date</label><input id="td" type="date" value="${ds()}"><button class="btn f" data-a="addtestok">Save test</button>`)}
+function settingsModal(){modal(`<h2>Settings</h2><label>Your name</label><input id="sn" value="${esc(D.name)}"><label>Daily goal (hours)</label><input id="sg" type="number" min="0.5" max="16" step="0.5" value="${D.goal}"><label>Exam date</label><input id="se" type="date" value="${D.exam}"><button class="btn f" data-a="savesettings">Save settings</button><div class="chips" style="margin-top:12px"><button class="btn o s" data-a="export">Download my data</button><button class="btn d s" data-a="reset">Erase all data</button></div>`)}
+function nameModal(){modal(`<h2>Welcome to Target200</h2><p class="sub">What should we call you?</p><input id="nm" placeholder="Your name" autocomplete="given-name"><button class="btn f" data-a="namesave">Start</button>`);$('mroot').firstChild.removeAttribute('data-a');setTimeout(()=>$('nm')&&$('nm').focus(),50)}
+
+/* ===== Events (delegated) ===== */
+document.addEventListener('click',e=>{
+  const n=e.target.closest('[data-p]');if(n)return nav(n.dataset.p);
+  const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,k=b.dataset.k;
+  if(a==='mclose'){if(e.target===b)closeModal();return}
+  if(a==='subj'){pick={s:k};nav('study')}
+  else if(a==='start')startSession();
+  else if(a==='stop'){if(confirm('Finish this session?'))endSession()}
+  else if(a==='pause'){ses.pr.man=!ses.pr.man;if(ses.pr.man)flush();uiTimer()}
+  else if(a==='brk')startBreak();
+  else if(a==='endbrk')endBreak();
+  else if(a==='stab'){sylS=k;nav('syllabus')}
+  else if(a==='per'){prog=k;nav('progress')}
+  else if(a==='addtopic')addTopicModal();
+  else if(a==='addtopicok'){const s=$('ms').value,c=$('mc2').value,p=$('mp').value;if(!s||!c||!p)return;const l=D.tl[ds()]=D.tl[ds()]||[],key=s+'|'+c+'|'+p;if(!l.includes(key))l.push(key);save();closeModal();nav('today')}
+  else if(a==='addtest')addTestModal();
+  else if(a==='addtestok'){const n=$('tn').value.trim(),s=$('ts').value,sc=parseFloat($('tsc').value),mx=parseFloat($('tmx').value);if(!n||!s||isNaN(sc)||!mx||sc>mx||sc<0)return alert('Enter a name, subject, and a score between 0 and the maximum.');D.tests.push({id:Date.now(),n,s,sc,max:mx,date:$('td').value||ds()});save();closeModal();nav('tests')}
+  else if(a==='deltest'){if(confirm('Delete this test?')){D.tests=D.tests.filter(t=>String(t.id)!==k);save();nav('tests')}}
+  else if(a==='settings')settingsModal();
+  else if(a==='savesettings'){D.name=$('sn').value.trim()||D.name;D.goal=Math.min(16,Math.max(.5,parseFloat($('sg').value)||3));D.exam=$('se').value||D.exam;save();closeModal();nav(cur)}
+  else if(a==='export'){const l=document.createElement('a');l.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:'application/json'}));l.download='target200-data.json';l.click()}
+  else if(a==='reset'){if(confirm('Erase everything? This cannot be undone.')){localStorage.removeItem(KEY);location.reload()}}
+  else if(a==='namesave'){const v=$('nm').value.trim();if(!v)return $('nm').focus();D.name=v;save();closeModal();nav('today')}
+});
+document.addEventListener('change',e=>{
+  const t=e.target,a=t.dataset.a,k=t.dataset.k;
+  if(a==='td'){const d=D.td[ds()]=D.td[ds()]||{};if(t.checked){d[k]=1;D.done[k]=1}else delete d[k];save();nav('today')}
+  else if(a==='syl'){if(t.checked)D.done[k]=1;else delete D.done[k];save();nav('syllabus')}
+  else if(t.id==='sc'){pick={s:pick.s,c:t.value||null};nav('study')}
+  else if(t.id==='sp'){pick.p=t.value||null;nav('study')}
+  else if(t.id==='ms'){const c=SYL[t.value]||{};$('mc2').innerHTML=opts(Object.keys(c),'Choose a chapter');$('mp').innerHTML='<option value="">Choose a topic</option>'}
+  else if(t.id==='mc2'){$('mp').innerHTML=opts((SYL[$('ms').value]||{})[t.value]||[],'Choose a topic')}
+});
+document.addEventListener('toggle',e=>{const d=e.target;if(d.tagName==='DETAILS'&&d.dataset.c){d.open?open.add(d.dataset.c):open.delete(d.dataset.c)}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='Enter'&&$('nm')&&document.activeElement===$('nm'))document.querySelector('[data-a=namesave]').click()});
+
+/* ===== Boot ===== */
+shell();nav('today');if(!D.name)nameModal();
+setInterval(()=>{if(cur==='today'&&!ses&&!$('mroot').firstChild)nav('today')},60000);
+</script>
+</body>
+</html>
